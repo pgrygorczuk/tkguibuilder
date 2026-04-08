@@ -1,0 +1,10 @@
+{
+	"form": {
+		"size": [1600, 900],
+		"title": "New project"
+	},
+	"font": {
+		"family": "fonts/segoeui.ttf",
+		"size": 16
+	}
+}
