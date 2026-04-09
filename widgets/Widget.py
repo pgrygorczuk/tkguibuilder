@@ -54,10 +54,27 @@ class Widget:
 		self.rect = pygame.rect.Rect(x, y, w, h)
 		self.handles = Handles(widget_rect=self.rect)
 		self.curr_handle = False
-		self.properties:dict = {}
+		self.properties:dict = {
+			"x": self.rect.x, "y": self.rect.y,
+			"width": self.rect.w, "height": self.rect.h,
+			"text": self.text, "is_enabled": self.is_enabled,
+		}
+
+	def get_properties(self) -> dict:
+		self.properties.update({
+			"x": self.rect.x, "y": self.rect.y,
+			"width": self.rect.w, "height": self.rect.h,
+			"text": self.text, "is_enabled": self.is_enabled, })
+		return self.properties
 
 	def set_properties(self, properties:dict):
 		self.properties.update(properties)
+		self.rect = pygame.rect.Rect(
+			self.properties["x"], self.properties["y"],
+			self.properties["width"], self.properties["height"] )
+		self.text = self.properties["text"]
+		self.is_enabled = self.properties["is_enabled"]
+		self.handles = Handles(self.rect)
 
 	def collidepoint(self, pos:tuple[int, int]) -> bool:
 		return pos and self.rect.collidepoint(pos)
