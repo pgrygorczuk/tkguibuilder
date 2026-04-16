@@ -9,6 +9,10 @@ def load_json(path:str):
 		d = json.load(f)
 	return d
 
+def load_text(path:str=""):
+	with open(path, "r", encoding="utf8") as f:
+		return f.read()
+
 def get_settings(path:str=""):
 	global settings
 	if not settings:
@@ -18,4 +22,3 @@ def get_settings(path:str=""):
 
 if __name__ == "__main__":
 	print(get_settings("form.size"))
-

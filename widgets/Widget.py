@@ -76,6 +76,9 @@ class Widget:
 		self.is_enabled = self.properties["is_enabled"]
 		self.handles = Handles(self.rect)
 
+	def get_code(self) -> str:
+		return "#TODO: add widget\n"
+
 	def collidepoint(self, pos:tuple[int, int]) -> bool:
 		return pos and self.rect.collidepoint(pos)
 	
