@@ -44,36 +44,42 @@ class Handles:
 
 
 class Widget:
-	def __init__(self, text:str, x:int, y:int, w:int, h:int, enabled:bool):
-		self.text = text
+	def __init__(self, props:dict={}):
+		self.name = props.get("name", f"widget{id(self)}")
+		self.text = props.get("text", self.__class__.__name__)
 		self.offset_x, self.offset_y = 0, 0
-		self.is_enabled = enabled
+		self.is_enabled = props.get("enabled", True)
 		self.is_active = False
 		self.drag_mode = False
 		self.resize_mode = False
-		self.rect = pygame.rect.Rect(x, y, w, h)
+		self.rect = pygame.rect.Rect(
+			props.get("x", 0), props.get("y", 0),
+			props.get("w", 100), props.get("h", 25) )
 		self.handles = Handles(widget_rect=self.rect)
 		self.curr_handle = False
-		self.properties:dict = {
+		self.props:dict = {
+			"name": self.name,
 			"x": self.rect.x, "y": self.rect.y,
 			"width": self.rect.w, "height": self.rect.h,
 			"text": self.text, "is_enabled": self.is_enabled,
 		}
 
 	def get_properties(self) -> dict:
-		self.properties.update({
+		self.props.update({
+			"name": self.name,
 			"x": self.rect.x, "y": self.rect.y,
 			"width": self.rect.w, "height": self.rect.h,
 			"text": self.text, "is_enabled": self.is_enabled, })
-		return self.properties
+		return self.props
 
-	def set_properties(self, properties:dict):
-		self.properties.update(properties)
+	def set_properties(self, props:dict):
+		self.props.update(props)
 		self.rect = pygame.rect.Rect(
-			self.properties["x"], self.properties["y"],
-			self.properties["width"], self.properties["height"] )
-		self.text = self.properties["text"]
-		self.is_enabled = self.properties["is_enabled"]
+			self.props["x"], self.props["y"],
+			self.props["width"], self.props["height"] )
+		self.name = self.props["name"]
+		self.text = self.props["text"]
+		self.is_enabled = self.props["is_enabled"]
 		self.handles = Handles(self.rect)
 
 	def get_code(self) -> str:

@@ -37,11 +37,11 @@ class PropsEditorForm(tk.Tk):
 		btn_frame = ttk.Frame(self)
 		btn_frame.pack(fill="x", pady=10)
 
-		save_btn = ttk.Button(btn_frame, text="Save", command=self.save)
-		save_btn.pack(side="right", padx=5)
-
 		close_btn = ttk.Button(btn_frame, text="Close", command=self.destroy)
 		close_btn.pack(side="right", padx=5)
+
+		save_btn = ttk.Button(btn_frame, text="Save", command=self.save)
+		save_btn.pack(side="right", padx=5)
 
 	def save(self):
 		for key, entry in self.inputs.items():

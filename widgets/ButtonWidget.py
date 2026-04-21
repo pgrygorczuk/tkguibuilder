@@ -4,8 +4,8 @@ from widgets.Widget import Widget
 
 
 class ButtonWidget(Widget):
-	def __init__(self, text, x, y, w, h, enabled):
-		super().__init__(text, x, y, w, h, enabled)
+	def __init__(self, props:dict={}):
+		super().__init__(props)
 
 	def draw(self, screen:pygame.Surface):
 		super().draw(screen)

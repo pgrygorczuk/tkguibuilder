@@ -1,9 +1,9 @@
-import pygame
 from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
-from widgets.LabelWidget import LabelWidget
 from widgets.ButtonWidget import ButtonWidget
+from widgets.LabelWidget import LabelWidget
 from common import *
+import pygame
 
 pygame.init()
 screen = pygame.display.set_mode(get_settings("form.size"))
@@ -13,23 +13,25 @@ clock = pygame.time.Clock()
 running = True
 
 widgets = [
-	ButtonWidget("Button", 100, 100, 100, 25, True),
+	ButtonWidget({
+		"name": "button1", "text": "Button",
+		"x": 100, "y": 100, "w": 100, "h": 25 }),
 ]
 
 def on_rclick(widget=None):
 	if widget:
 		props = widget.get_properties()
-		PropsEditorForm("Edit properties", props=props).mainloop()
-		widget.set_properties(properties=props)
+		PropsEditorForm("Edit properties", props).mainloop()
+		widget.set_properties(props=props)
 	else:
 		pos = pygame.mouse.get_pos()
-		props = { "widget": None }
+		props = { "widget": None, "x": pos[0], "y": pos[1] }
 		WidgetSelectForm("Widget select", props).mainloop()
 		# Add selected widget.
 		if props["widget"] == "Label":
-			widgets.append(LabelWidget("Label", pos[0], pos[1], 100, 25, True))
+			widgets.append(LabelWidget(props))
 		elif props["widget"] == "Button":
-			widgets.append(ButtonWidget("Button", pos[0], pos[1], 100, 25, True))
+			widgets.append(ButtonWidget(props))
 
 
 while running:
