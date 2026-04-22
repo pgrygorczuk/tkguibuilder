@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 from widgets.Widget import Widget
+from widgets.LabelWidget import LabelWidget
+from widgets.ButtonWidget import ButtonWidget
 from common import get_settings
 
 
@@ -36,10 +38,14 @@ class CodeGenerator:
 
 if __name__ == "__main__":
 	widgets = [
-		Widget("Widget0", 100, 100, 100, 25, True),
-		Widget("Widget1", 100, 100, 100, 25, True), ]
+		ButtonWidget({
+			"name": "button1", "text": "Button",
+			"x": 100, "y": 100, "w": 100, "h": 25 }),
+		LabelWidget({
+			"name": "label1", "text": "Label",
+			"x": 100, "y": 250, "w": 100, "h": 25 }), ]
 	codegen = CodeGenerator()
 	code = codegen.generate_code(widgets)
-	print(code)
+	#print(code)
 	codegen.save_as(code, "main.py")
 

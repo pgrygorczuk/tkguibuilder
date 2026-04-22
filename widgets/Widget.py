@@ -52,6 +52,7 @@ class Widget:
 		self.is_active = False
 		self.drag_mode = False
 		self.resize_mode = False
+		self.bindings:dict = {}
 		self.rect = pygame.rect.Rect(
 			props.get("x", 0), props.get("y", 0),
 			props.get("w", 100), props.get("h", 25) )
@@ -83,7 +84,10 @@ class Widget:
 		self.handles = Handles(self.rect)
 
 	def get_code(self) -> str:
-		return "#TODO: add widget\n"
+		return f"#{self.name}\n"
+
+	def bind(self, sequence:str, code:str):
+		self.bindings[sequence] = code
 
 	def collidepoint(self, pos:tuple[int, int]) -> bool:
 		return pos and self.rect.collidepoint(pos)
