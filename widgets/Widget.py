@@ -45,7 +45,11 @@ class Handles:
 
 class Widget:
 	def __init__(self, props:dict={}):
-		self.name = props.get("name", f"widget{id(self)}")
+		default_name = self.__class__.__name__.lower()
+		if not default_name.startswith("widget"):
+			default_name = default_name.rstrip("widget")
+		default_name += str(id(self))[-4:]
+		self.name = props.get("name", default_name)
 		self.text = props.get("text", self.__class__.__name__)
 		self.offset_x, self.offset_y = 0, 0
 		self.is_enabled = props.get("enabled", True)

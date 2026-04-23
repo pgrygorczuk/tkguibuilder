@@ -6,5 +6,6 @@
 	"font": {
 		"family": "fonts/segoeui.ttf",
 		"size": 16
-	}
+	},
+	"workspace": "./app/"
 }

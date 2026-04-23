@@ -2,6 +2,7 @@ from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
 from widgets.ButtonWidget import ButtonWidget
 from widgets.LabelWidget import LabelWidget
+from CodeGenerator import CodeGenerator
 from common import *
 import pygame
 
@@ -12,11 +13,13 @@ pygame.display.set_caption(get_settings("form.title"))
 clock = pygame.time.Clock()
 running = True
 
-widgets = [
-	ButtonWidget({
-		"name": "button1", "text": "Button",
-		"x": 100, "y": 100, "w": 100, "h": 25 }),
-]
+widgets = load_pic(get_workspace_path("widgets.pic"))
+
+def save():
+	codegen = CodeGenerator()
+	code = codegen.generate_code(widgets)
+	save_text(code, get_workspace_path("main.py"))
+	save_pic(widgets, get_workspace_path("widgets.pic"))
 
 def on_rclick(widget=None):
 	if widget:
@@ -49,6 +52,12 @@ while running:
 		# Right mouse click (button 3).
 		if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
 			on_rclick(clicked_widget) # Right mouse button has been clicked.
+		# Keys
+		elif event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_F1:
+				...
+			elif event.key == pygame.K_F2:
+				save()
 
 	# Draw widgets
 	screen.fill("whitesmoke")
