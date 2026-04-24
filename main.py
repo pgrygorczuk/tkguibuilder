@@ -3,6 +3,7 @@ from forms.PropsEditorForm import PropsEditorForm
 from widgets.ButtonWidget import ButtonWidget
 from widgets.LabelWidget import LabelWidget
 from CodeGenerator import CodeGenerator
+from widgets.Widget import Widget
 from common import *
 import pygame
 
@@ -39,7 +40,8 @@ def on_rclick(widget=None):
 
 while running:
 	pos = pygame.mouse.get_pos()
-	clicked_widget = None
+	clicked_widget:Widget = None
+	active_widget:Widget = None
 	# Loop through events.
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -49,6 +51,8 @@ while running:
 			widget.handle_event(event)
 			if widget.collidepoint(pos):
 				clicked_widget = widget
+			if widget.is_active:
+				active_widget = widget
 		# Right mouse click (button 3).
 		if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
 			on_rclick(clicked_widget) # Right mouse button has been clicked.
@@ -58,6 +62,8 @@ while running:
 				...
 			elif event.key == pygame.K_F2:
 				save()
+			elif event.key == pygame.K_DELETE and active_widget:
+				widgets.remove(active_widget)
 
 	# Draw widgets
 	screen.fill("whitesmoke")
