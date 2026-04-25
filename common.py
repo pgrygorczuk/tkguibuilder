@@ -47,5 +47,9 @@ def save_pic(items:list|dict, path:str):
 	with open(path, "wb") as f:
 		pickle.dump(items, f)
 
+# Tkinter uses points, pygame uses pixels
+def pt2px(pt:int, dpi:int=96) -> int:
+	return int(pt * dpi / 72)
+
 if __name__ == "__main__":
 	print(get_settings("form.size"))

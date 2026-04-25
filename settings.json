@@ -4,8 +4,8 @@
 		"title": "New project"
 	},
 	"font": {
-		"family": "fonts/segoeui.ttf",
-		"size": 16
+		"family": "Segoe UI",
+		"size": 12
 	},
 	"workspace": "./app/"
 }

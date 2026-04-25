@@ -9,7 +9,8 @@ class LabelWidget(Widget):
 
 	def draw(self, screen:pygame.Surface):
 		super().draw(screen)
-		font = pygame.font.Font(get_settings("font.family"), get_settings("font.size"))
+		font = pygame.font.Font("fonts/"+get_settings("font.family"),
+						  		pt2px(get_settings("font.size")))
 		text = font.render(self.text, True, "black")
 		pygame.draw.rect(screen, "lightgray", self.rect, width=1, border_radius=1)
 		rect = text.get_rect(center=(self.rect.centerx, self.rect.centery))

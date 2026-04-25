@@ -8,14 +8,15 @@ from common import *
 import pygame, time
 
 pygame.init()
-screen = pygame.display.set_mode(get_settings("form.size"))
-font = pygame.font.Font(get_settings("font.family"), get_settings("font.size"))
 pygame.display.set_caption(get_settings("form.title"))
+screen = pygame.display.set_mode(get_settings("form.size"))
+font = pygame.font.Font("fonts/"+get_settings("font.family"),
+						pt2px(get_settings("font.size")))
 clock = pygame.time.Clock()
 click_time = 0
 running = True
 
-widgets = load_pic(get_workspace_path("widgets.pic"))
+widgets:list[Widget] = load_pic(get_workspace_path("widgets.pic"))
 
 def save():
 	codegen = CodeGenerator()
