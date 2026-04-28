@@ -1,6 +1,7 @@
 from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
 from widgets.ButtonWidget import ButtonWidget
+from widgets.EntryWidget import EntryWidget
 from widgets.LabelWidget import LabelWidget
 from CodeGenerator import CodeGenerator
 from widgets.Widget import Widget
@@ -38,6 +39,8 @@ def on_rclick(widget=None):
 			widgets.append(LabelWidget(props))
 		elif props["widget"] == "Button":
 			widgets.append(ButtonWidget(props))
+		elif props["widget"] == "Entry":
+			widgets.append(EntryWidget(props))
 
 
 while running:

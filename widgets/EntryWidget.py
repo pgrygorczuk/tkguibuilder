@@ -23,7 +23,10 @@ class EntryWidget(Widget):
 
 	def get_code(self):
 		code = super().get_code()
-		code += f'{self.name} = ttk.Entry(root, text="{self.text}")\n'
+		fontf = get_settings("font.family")
+		fonts = get_settings("font.size")
+		code += f'{self.name} = ttk.Entry(root, font=font)\n'
 		code += f'{self.name}.place(x={self.rect.x}, y={self.rect.y}, '
 		code += f'width={self.rect.width}, height={self.rect.height})\n'
+		code += f'{self.name}.insert(0, "{self.text}")'
 		return code
