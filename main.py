@@ -16,6 +16,7 @@ font = pygame.font.Font("fonts/"+get_settings("font.family"),
 clock = pygame.time.Clock()
 click_time = 0
 running = True
+hint_visible = True
 
 widgets:list[Widget] = load_pic(get_workspace_path("widgets.pic"))
 
@@ -41,6 +42,11 @@ def on_rclick(widget=None):
 			widgets.append(ButtonWidget(props))
 		elif props["widget"] == "Entry":
 			widgets.append(EntryWidget(props))
+
+def show_hint(screen:pygame.Surface):
+	s = f"F1 - help  :  F2 - save  :  F3 - load  :  F4 - settings"
+	text = font.render(s, False, [0, 0, 0])
+	screen.blit(text, [5, screen.get_size()[1]-25])
 
 
 while running:
@@ -79,6 +85,8 @@ while running:
 	screen.fill("whitesmoke")
 	for widget in widgets:
 		widget.draw(screen)
+	if hint_visible:
+		show_hint(screen)
 
 	pygame.display.flip() # Update the display.
 	# It will compute how many milliseconds have passed since the previous call.
