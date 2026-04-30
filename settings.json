@@ -7,5 +7,6 @@
 		"family": "Segoe UI",
 		"size": 12
 	},
-	"workspace": "./app/"
+	"workspace": "./app/",
+	"grid_size": 10
 }

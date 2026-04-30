@@ -10,7 +10,7 @@ import pygame, time
 
 pygame.init()
 pygame.display.set_caption(get_settings("form.title"))
-screen = pygame.display.set_mode(get_settings("form.size"))
+screen = pygame.display.set_mode(get_settings("form.size"), pygame.RESIZABLE)
 font = pygame.font.Font("fonts/"+get_settings("font.family"),
 						pt2px(get_settings("font.size")))
 clock = pygame.time.Clock()
@@ -48,6 +48,16 @@ def show_hint(screen:pygame.Surface):
 	text = font.render(s, False, [0, 0, 0])
 	screen.blit(text, [5, screen.get_size()[1]-25])
 
+def draw_grid(screen:pygame.Surface):
+	gs = Widget.grid_size
+	if gs < 2: return
+	x, y = gs, gs
+	while x < screen.get_width():
+		while y < screen.get_height():
+			screen.set_at([x, y], "black")
+			y += gs
+		x += gs
+		y = gs
 
 while running:
 	pos = pygame.mouse.get_pos()
@@ -83,6 +93,7 @@ while running:
 
 	# Draw widgets
 	screen.fill("whitesmoke")
+	draw_grid(screen)
 	for widget in widgets:
 		widget.draw(screen)
 	if hint_visible:

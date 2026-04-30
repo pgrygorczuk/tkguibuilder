@@ -1,3 +1,4 @@
+from common import get_settings
 import pygame
 
 class Handles:
@@ -44,6 +45,8 @@ class Handles:
 
 
 class Widget:
+	grid_size:int = int(get_settings("grid_size", 0))
+
 	def __init__(self, props:dict={}):
 		default_name = self.__class__.__name__.lower()
 		if not default_name.startswith("widget"):
@@ -68,6 +71,15 @@ class Widget:
 			"width": self.rect.w, "height": self.rect.h,
 			"text": self.text, "is_enabled": self.is_enabled,
 		}
+
+	def __handle_grid_snapping(self):
+		gs = Widget.grid_size
+		if gs < 2: return
+		self.rect.x = round(self.rect.x / gs) * gs
+		self.rect.y = round(self.rect.y / gs) * gs
+		self.rect.w = round(self.rect.w / gs) * gs
+		self.rect.h = round(self.rect.h / gs) * gs
+		self.handles = Handles(self.rect)
 
 	def get_properties(self) -> dict:
 		self.props.update({
@@ -203,3 +215,4 @@ class Widget:
 			self.resize_mode = False
 		else:
 			self.on_click(pos, button)
+		self.__handle_grid_snapping()

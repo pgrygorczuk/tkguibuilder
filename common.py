@@ -4,11 +4,17 @@ import json, os, pickle
 
 settings = {}
 
-def get_settings(path:str=""):
+def get_settings(path:str="", default=None):
 	global settings
 	if not settings:
 		settings = load_json("settings.json")
-	return reduce(dict.get, path.split("."), settings)
+	retval = reduce(dict.get, path.split("."), settings)
+	if retval is None:
+		if not default is None:
+			return default
+		else:
+			raise KeyError(f"'{path}' does not exist in settings.json.")
+	return retval
 
 def get_workspace_path(path:str) -> str:
 	workspace = get_settings("workspace")
