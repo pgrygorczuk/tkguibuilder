@@ -1,5 +1,6 @@
 from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
+from widgets.ComboboxWidget import ComboboxWidget
 from widgets.ButtonWidget import ButtonWidget
 from widgets.EntryWidget import EntryWidget
 from widgets.LabelWidget import LabelWidget
@@ -42,6 +43,8 @@ def on_rclick(widget=None):
 			widgets.append(ButtonWidget(props))
 		elif props["widget"] == "Entry":
 			widgets.append(EntryWidget(props))
+		elif props["widget"] == "Combobox":
+			widgets.append(ComboboxWidget(props))
 
 def show_hint(screen:pygame.Surface):
 	s = f"F1 - help  :  F2 - save  :  F3 - load  :  F4 - settings"
