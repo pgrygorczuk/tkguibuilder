@@ -5,7 +5,8 @@
 	},
 	"font": {
 		"family": "Segoe UI",
-		"size": 12
+		"size": 12,
+		"style": ""
 	},
 	"workspace": "./app/",
 	"grid_size": 10

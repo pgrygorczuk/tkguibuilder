@@ -1,18 +1,26 @@
-from tkinter import ttk
 import tkinter as tk
+from tkinter import ttk
 import tkinter.font
 
-root = tk.Tk()
-style = ttk.Style()
-font = ["{font_family}", {font_size}]
-root.title("{title}")
-root.minsize({size[0]}, {size[1]})
-root.geometry("{size[0]}x{size[1]}+50+50")
-default_font = tk.font.nametofont("TkDefaultFont")
-default_font.configure(family="{font_family}", size={font_size})
+class MainFrame(ttk.Frame):
 
-# Create widgets
-{widgets}
+	def __init__(self, parent):
+		super().__init__(parent)
+		self.parent = parent
+		self.style = ttk.Style()
+		self.parent.title("{title}")
+		self.font = ["{font_family}", {font_size}]
+		self.parent.geometry("{size[0]}x{size[1]}")
+		default_font = tk.font.nametofont("TkDefaultFont")
+		default_font.configure(family="{font_family}", size={font_size})
+		self.__build_ui()
+
+	def __build_ui(self):
+		{widgets}
+		self.pack(fill="both", expand=True)
 
 
-root.mainloop()
+if __name__ == "__main__":
+	root = tk.Tk()
+	app = MainFrame(root)
+	root.mainloop()

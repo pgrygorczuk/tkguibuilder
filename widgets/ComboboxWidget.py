@@ -6,6 +6,7 @@ from widgets.Widget import Widget
 class ComboboxWidget(Widget):
 	def __init__(self, props:dict={}):
 		super().__init__(props)
+		self.values = props.get("values", [self.text])
 
 	def draw(self, screen:pygame.Surface):
 		super().draw(screen)
@@ -35,12 +36,14 @@ class ComboboxWidget(Widget):
 		pygame.draw.rect(screen, "dimgray", self.rect, width=1, border_radius=1)
 		screen.set_clip(old_clip)
 
-	def get_code(self):
-		code = super().get_code()
+	def get_code(self, indent:int=0):
+		code = super().get_code(indent)
 		fontf = get_settings("font.family")
 		fonts = get_settings("font.size")
-		code += f'{self.name} = ttk.Combobox(root, font=font)\n'
-		code += f'{self.name}.place(x={self.rect.x}, y={self.rect.y}, '
-		code += f'width={self.rect.width}, height={self.rect.height})\n'
-		code += f'{self.name}.current(1)'
-		return code
+		ind = "\t"*indent
+		return code + (
+			f'{ind}{self.vname} = ttk.Combobox(self, font=self.font, values=["{",".join(self.values)}"])\n'
+			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, '
+			f'width={self.rect.width}, height={self.rect.height})\n'
+			f'{ind}{self.vname}.current(0)'
+		)

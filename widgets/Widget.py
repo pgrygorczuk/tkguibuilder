@@ -62,7 +62,7 @@ class Widget:
 		self.bindings:dict = {}
 		self.rect = pygame.rect.Rect(
 			props.get("x", 0), props.get("y", 0),
-			props.get("w", 100), props.get("h", 25) )
+			props.get("w", 100), props.get("h", 30) )
 		self.handles = Handles(widget_rect=self.rect)
 		self.curr_handle = False
 		self.props:dict = {
@@ -71,6 +71,9 @@ class Widget:
 			"width": self.rect.w, "height": self.rect.h,
 			"text": self.text, "is_enabled": self.is_enabled,
 		}
+
+	@property
+	def vname(self): return "self."+self.name
 
 	def __handle_grid_snapping(self):
 		gs = Widget.grid_size
@@ -99,8 +102,8 @@ class Widget:
 		self.is_enabled = self.props["is_enabled"]
 		self.handles = Handles(self.rect)
 
-	def get_code(self) -> str:
-		return f"#{self.name}\n"
+	def get_code(self, indent:int=0) -> str:
+		return "\t"*indent + f"#{self.name}\n"
 
 	def bind(self, sequence:str, code:str):
 		self.bindings[sequence] = code

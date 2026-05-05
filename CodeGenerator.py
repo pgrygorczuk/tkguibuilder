@@ -20,12 +20,13 @@ class CodeGenerator:
 		font_size   = get_settings("font.size")
 		font_style  = get_settings("font.style")
 		ws = ""
+		ln = 0
 		for widget in widgets:
-			ws += widget.get_code()
+			ws += widget.get_code(indent = 2)
 		code = templ.format(
 			title = title,
 			size = size,
-			widgets = ws,
+			widgets = ws.strip(),
 			font_family = font_family,
 			font_size = font_size,
 			font_style = font_style )

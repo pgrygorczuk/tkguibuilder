@@ -39,7 +39,7 @@ def load_text(path:str=""):
 		return f.read()
 
 def save_text(text:str, path:str):
-	with open(path, "w+") as f:
+	with open(path, "w+", encoding="utf8") as f:
 		f.write(text)
 
 def load_pic(path:str, default:list|dict=[]) -> list|dict:

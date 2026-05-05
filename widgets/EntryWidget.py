@@ -21,12 +21,14 @@ class EntryWidget(Widget):
 		screen.blit(text, [x+2, y])
 		screen.set_clip(old_clip)
 
-	def get_code(self):
-		code = super().get_code()
+	def get_code(self, indent:int=0):
+		code = super().get_code(indent)
+		ind = "\t"*indent
 		fontf = get_settings("font.family")
 		fonts = get_settings("font.size")
-		code += f'{self.name} = ttk.Entry(root, font=font)\n'
-		code += f'{self.name}.place(x={self.rect.x}, y={self.rect.y}, '
-		code += f'width={self.rect.width}, height={self.rect.height})\n'
-		code += f'{self.name}.insert(0, "{self.text}")'
-		return code
+		return code + (
+			f'{ind}{self.vname} = ttk.Entry(self, font=self.font)\n'
+			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, '
+			f'width={self.rect.width}, height={self.rect.height})\n'
+			f'{ind}{self.vname}.insert(0, "{self.text}")\n'
+		)
