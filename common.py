@@ -16,7 +16,7 @@ def get_settings(path:str="", default=None):
 			raise KeyError(f"'{path}' does not exist in settings.json.")
 	return retval
 
-def get_workspace_path(path:str) -> str:
+def get_workspace_path(path:str="") -> str:
 	workspace = get_settings("workspace")
 	if not path.startswith(workspace):
 		path = workspace + path
@@ -24,21 +24,21 @@ def get_workspace_path(path:str) -> str:
 	Path(directory).mkdir(parents=True, exist_ok=True)
 	return path
 
-def load_json(path:str):
+def load_json(path:str) -> dict:
 	d = {}
 	with open(path) as f:
 		d = json.load(f)
 	return d
 
-def save_json(data:dict, path:str):
+def save_json(data:dict, path:str) -> None:
 	with open(path, "w") as f:
-		json.dump(data, f)
+		json.dump(data, f, indent=4)
 
-def load_text(path:str=""):
+def load_text(path:str="") -> str:
 	with open(path, "r", encoding="utf8") as f:
 		return f.read()
 
-def save_text(text:str, path:str):
+def save_text(text:str, path:str) -> None:
 	with open(path, "w+", encoding="utf8") as f:
 		f.write(text)
 
@@ -49,7 +49,7 @@ def load_pic(path:str, default:list|dict=[]) -> list|dict:
 			items = pickle.load(f)
 	return items
 
-def save_pic(items:list|dict, path:str):
+def save_pic(items:list|dict, path:str) -> None:
 	with open(path, "wb") as f:
 		pickle.dump(items, f)
 

@@ -1,13 +1,16 @@
 {
-	"form": {
-		"size": [1600, 900],
-		"title": "New project"
-	},
-	"font": {
-		"family": "Segoe UI",
-		"size": 12,
-		"style": ""
-	},
-	"workspace": "./app/",
-	"grid_size": 10
+    "form": {
+        "size": [
+            1600,
+            900
+        ],
+        "title": "New project"
+    },
+    "font": {
+        "family": "Segoe UI",
+        "size": 12,
+        "style": ""
+    },
+    "workspace": "./app/",
+    "grid_size": 10
 }

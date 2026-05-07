@@ -1,5 +1,6 @@
 from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
+from forms.SaveForm import SaveForm
 from widgets.ComboboxWidget import ComboboxWidget
 from widgets.ButtonWidget import ButtonWidget
 from widgets.EntryWidget import EntryWidget
@@ -9,6 +10,7 @@ from CodeGenerator import CodeGenerator
 from widgets.Widget import Widget
 from common import *
 import pygame, time
+import tkinter as tk
 
 pygame.init()
 pygame.display.set_caption(get_settings("form.title"))
@@ -23,10 +25,12 @@ hint_visible = True
 widgets:list[Widget] = load_pic(get_workspace_path("widgets.pic"))
 
 def save():
-	codegen = CodeGenerator()
-	code = codegen.generate_code(widgets)
-	save_text(code, get_workspace_path("main.py"))
-	save_pic(widgets, get_workspace_path("widgets.pic"))
+	form = SaveForm.run("Save as")
+	if form.action == "save":
+		codegen = CodeGenerator()
+		code = codegen.generate_code(widgets)
+		save_text(code, form.workspace_path + "main.py")
+		save_pic(widgets, form.workspace_path + "widgets.pic")
 
 def on_rclick(widget=None):
 	if widget:
