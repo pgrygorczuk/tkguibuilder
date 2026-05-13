@@ -1,20 +1,26 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font
-from common import *
+from Project import Project
 
 class SaveForm(ttk.Frame):
 
-	def __init__(self, parent:ttk.Frame, title:str):
+	def __init__(self, parent:ttk.Frame|tk.Tk, title:str, project:Project):
 		super().__init__(parent)
+		screen_width = self.winfo_screenwidth()
+		screen_height = self.winfo_screenheight()
+		w, h = 700, 140
+		x = int((screen_width/2) - (w/2))
+		y = int((screen_height/2) - (h/2))
 		self.parent = parent
-		self.style = ttk.Style()
+		self.project = project
 		self.parent.title(title)
+		self.parent.geometry(f"{w}x{h}+{x}+{y}")
+		self.style = ttk.Style()
 		self.font = ["Segoe UI", 12]
-		self.parent.geometry("700x140")
 		default_font = tk.font.nametofont("TkDefaultFont")
 		default_font.configure(family="Segoe UI", size=12)
-		self.workspace_path = get_settings("workspace")
+		self.workspace_path = self.project.get_settings("workspace")
 		self.action = None
 		self.__build_ui()
 		self.__bind_events()
@@ -41,9 +47,9 @@ class SaveForm(ttk.Frame):
 		self.save_btn.bind("<Button-1>", self.save_btn__button_1)
 
 	@staticmethod
-	def run(title:str):
+	def run(title:str, project:Project):
 		root = tk.Tk()
-		form = SaveForm(root, title)
+		form = SaveForm(root, title, project)
 		root.mainloop()
 		return form
 
@@ -54,16 +60,13 @@ class SaveForm(ttk.Frame):
 
 	def save_btn__button_1(self, event:tk.Event):
 		self.workspace_path = self.ws_entry_var.get()
-		settings = load_json("settings.json")
-		if settings["workspace"] != self.workspace_path:
-			settings["workspace"] = self.workspace_path
-			save_json(settings, "settings.json")
+		workspace = self.project.get_workspace_path()
+		if workspace != self.workspace_path:
+			self.project.set_workspace(self.workspace_path)
 		self.action = "save"
 		# self.parent.destroy()
 		self.after_idle(self.parent.destroy)
 
 
 if __name__ == "__main__":
-	root = tk.Tk()
-	app = SaveForm(root)
-	root.mainloop()
+	...

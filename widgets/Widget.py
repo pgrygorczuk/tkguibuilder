@@ -1,4 +1,3 @@
-from common import get_settings
 import pygame
 
 class Handles:
@@ -7,7 +6,7 @@ class Handles:
 		self.widget_rect:pygame.rect.Rect = widget_rect
 		self.__init_rectangles()
 
-	def __init_rectangles(self):
+	def __init_rectangles(self) -> None:
 		s = self.size
 		x, y, w, h = self.widget_rect.x, self.widget_rect.y, self.widget_rect.w, self.widget_rect.h
 		self.rectangles = [ # Clockwise order.
@@ -21,21 +20,21 @@ class Handles:
 			pygame.rect.Rect(x-s,       y+h/2-s/2, s, s), # WW
 		]
 
-	def set_xy(self, x:int, y:int):
+	def set_xy(self, x:int, y:int) -> None:
 		self.widget_rect.x = x
 		self.widget_rect.y = y
 		self.__init_rectangles()
 
-	def set_wh(self, w:int, h:int):
+	def set_wh(self, w:int, h:int) -> None:
 		self.widget_rect.w = w
 		self.widget_rect.h = h
 		self.__init_rectangles()
 
-	def draw(self, screen:pygame.Surface):
+	def draw(self, screen:pygame.Surface) -> None:
 		for rect in self.rectangles:
 			pygame.draw.rect(screen, "blue", rect, width=0, border_radius=0)
 
-	def collidepoint(self, pos:tuple[int, int]) -> str:
+	def collidepoint(self, pos:tuple[int, int]) -> str|None:
 		if not pos: return None
 		d = [ 'NW', 'NN', 'NE', 'EE', 'SE', 'SS', 'SW', 'WW' ]
 		for i, rect in enumerate(self.rectangles):
@@ -45,7 +44,7 @@ class Handles:
 
 
 class Widget:
-	grid_size:int = int(get_settings("grid_size", 0))
+	grid_size:int = 0
 
 	def __init__(self, props:dict={}):
 		default_name = self.__class__.__name__.lower()
@@ -75,7 +74,7 @@ class Widget:
 	@property
 	def vname(self): return "self."+self.name
 
-	def __handle_grid_snapping(self):
+	def __handle_grid_snapping(self) -> None:
 		gs = Widget.grid_size
 		if gs < 2: return
 		self.rect.x = round(self.rect.x / gs) * gs
@@ -92,7 +91,7 @@ class Widget:
 			"text": self.text, "is_enabled": self.is_enabled, })
 		return self.props
 
-	def set_properties(self, props:dict):
+	def set_properties(self, props:dict) -> None:
 		self.props.update(props)
 		self.rect = pygame.rect.Rect(
 			self.props["x"], self.props["y"],
@@ -105,17 +104,17 @@ class Widget:
 	def get_code(self, indent:int=0) -> str:
 		return "\t"*indent + f"#{self.name}\n"
 
-	def bind(self, sequence:str, code:str):
+	def bind(self, sequence:str, code:str) -> None:
 		self.bindings[sequence] = code
 
 	def collidepoint(self, pos:tuple[int, int]) -> bool:
 		return pos and self.rect.collidepoint(pos)
 	
-	def draw(self, screen:pygame.Surface):
+	def draw(self, screen:pygame.Surface, font:pygame.font.Font|None=None) -> None:
 		if self.is_active: # Draw the selection.
 			self.handles.draw(screen)
 
-	def handle_event(self, event:pygame.event.Event):
+	def handle_event(self, event:pygame.event.Event) -> None:
 		pos = pygame.mouse.get_pos()
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			self.on_mousedown(pos, event.button)			
@@ -124,13 +123,13 @@ class Widget:
 		elif event.type == pygame.MOUSEBUTTONUP:
 			self.on_mouseup(pos, event.button)
 
-	def __check_boundary_conditions(self):
+	def __check_boundary_conditions(self) -> None:
 		if self.rect.x < 0: self.rect.x = 0
 		if self.rect.y < 0: self.rect.y = 0
 		if self.rect.w < 10: self.rect.w = 10
 		if self.rect.h < 10: self.rect.h = 10
 
-	def on_click(self, pos:tuple[int, int], button:int=1):
+	def on_click(self, pos:tuple[int, int], button:int=1) -> None:
 		if button == 3 and self.collidepoint(pos):
 			self.is_active = True
 			self.on_rclick()
@@ -139,10 +138,10 @@ class Widget:
 		elif pos: # The click was performed somewhere else.
 			self.is_active = False
 
-	def on_rclick(self):
+	def on_rclick(self) -> None:
 		...
 
-	def on_mousemove(self, pos:tuple[int, int]):
+	def on_mousemove(self, pos:tuple[int, int]) -> None:
 		handle = self.handles.collidepoint(pos)
 		if self.is_active:
 			if handle in ("NW", "SE"):
@@ -195,7 +194,7 @@ class Widget:
 			self.handles.set_wh(self.rect.w, self.rect.h)
 		# End if
 
-	def on_mousedown(self, pos:tuple[int, int], button:int=1):
+	def on_mousedown(self, pos:tuple[int, int], button:int=1) -> None:
 		if button != 1:
 			return
 		if self.is_active and self.collidepoint(pos):
@@ -209,7 +208,7 @@ class Widget:
 		else:
 			self.curr_handle = False
 
-	def on_mouseup(self, pos:tuple[int, int], button:int=1):
+	def on_mouseup(self, pos:tuple[int, int], button:int=1) -> None:
 		if button != 1:
 			self.on_click(pos, button)
 		elif pos and self.drag_mode:
