@@ -40,7 +40,6 @@ class Dict(dict):
 		# Update recursively.
 		def update(d:dict, u:dict):
 			for k, v in u.items():
-				# if isinstance(v, collections.abc.Mapping):
 				if type(v) == dict:
 					d[k] = update(d.get(k, {}), v)
 				else:
@@ -53,10 +52,5 @@ class Dict(dict):
 
 if __name__ == "__main__":
 	d = Dict(a=1, b=2)
-	print(d)
 	d = Dict.from_json("./settings.json")
-	print(type(d), d)
-	print("workspace =", d.get_by_path("workspace"))
-	d.set_by_path("test1.test2", "test value")
-	print(d)
 	print(d.get_by_path("non.existing.path"))

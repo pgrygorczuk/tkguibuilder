@@ -59,6 +59,10 @@ while running:
 			elif event.key == pygame.K_DELETE and active_widget:
 				project.remove_widget(active_widget)
 
+		# Handle window resize.
+		elif event.type == pygame.VIDEORESIZE:
+			screen = actions.on_window_resize(screen, project)
+
 	# Draw widgets.
 	screen.fill("whitesmoke")
 	draw.draw_grid(screen, Widget.grid_size)

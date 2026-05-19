@@ -1,11 +1,22 @@
 """Actions triggered in response to program window events."""
 
+import pygame
 from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
 from forms.SaveForm import SaveForm
 from widgets.Widget import Widget
 from Project import Project
 import factory, utils
+
+def on_window_resize(screen: pygame.Surface, project: Project) -> pygame.Surface:
+	w, h = screen.get_size()
+	gs = Widget.grid_size
+	if gs > 1:
+		w = round(w / gs) * gs
+		h = round(h / gs) * gs
+	w, h = max(160, w), max(80, h)
+	project.settings.set_by_path("form.size", [w, h])
+	return pygame.display.set_mode([w, h], pygame.RESIZABLE)
 
 def save(project: Project):
 	"""Builds and saves a project."""

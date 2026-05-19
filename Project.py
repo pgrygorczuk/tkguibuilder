@@ -16,7 +16,7 @@ class Project:
 		The Workspace is a directory where the project is stored."""
 		self.name = name
 		self.menu:Dict = Dict()
-		self.settings:Dict = Dict()
+		self.settings:Dict = Project.settings.copy()
 		self.widgets:list[Widget] = []
 
 	def save(self):
