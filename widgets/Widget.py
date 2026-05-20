@@ -74,6 +74,9 @@ class Widget:
 	@property
 	def vname(self): return "self."+self.name
 
+	@property
+	def variable(self): return f"self.{self.name}_var"
+
 	def __handle_grid_snapping(self) -> None:
 		gs = Widget.grid_size
 		if gs < 2: return

@@ -4,7 +4,7 @@ import tkinter.font
 
 class MainFrame(ttk.Frame):
 
-	def __init__(self, parent):
+	def __init__(self, parent:ttk.Frame|tk.Tk):
 		super().__init__(parent)
 		self.parent = parent
 		self.style = ttk.Style()

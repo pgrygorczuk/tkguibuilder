@@ -37,7 +37,9 @@ class ComboboxWidget(Widget):
 		code = super().get_code(indent)
 		ind = "\t"*indent
 		return code + (
-			f'{ind}{self.vname} = ttk.Combobox(self, font=self.font, values=["{",".join(self.values)}"])\n'
+			f'{ind}{self.variable} = tk.StringVar()\n'
+			f'{ind}{self.vname} = ttk.Combobox(self, font=self.font, textvariable={self.variable})\n'
+			f'{ind}{self.vname}["values"] = ["{",".join(self.values)}"]\n'
 			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, '
 			f'width={self.rect.width}, height={self.rect.height})\n'
 			f'{ind}{self.vname}.current(0)'

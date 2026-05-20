@@ -21,7 +21,8 @@ class CheckbuttonWidget(Widget):
 		code = super().get_code(indent)
 		ind = "\t"*indent
 		return code + (
-			f'{ind}{self.vname} = ttk.Checkbutton(self, text="{self.text}", takefocus=0)\n'
+			f'{ind}{self.variable} = tk.IntVar()\n'
+			f'{ind}{self.vname} = ttk.Checkbutton(self, text="{self.text}", variable={self.variable}, takefocus=0)\n'
 			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, '
 			f'width={self.rect.width}, height={self.rect.height})\n'
 		)
