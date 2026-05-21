@@ -7,7 +7,7 @@ class WidgetSelectForm(tk.Tk):
 		super().__init__()
 		self.title(title)
 		self.props = props
-		self.geometry("300x250")
+		self.geometry("300x350")
 		self.__build_ui()
 
 	def __build_ui(self):
@@ -24,6 +24,7 @@ class WidgetSelectForm(tk.Tk):
 			("Entry", self.create_entry_preview),
 			("Combobox", self.create_combobox_preview),
 			("Checkbutton", self.create_checkbutton_preview),
+			("Listbox", self.create_listbox_preview),
 			("Text", self.create_text_preview),
 		]
 
@@ -60,6 +61,11 @@ class WidgetSelectForm(tk.Tk):
 
 	def create_checkbutton_preview(self, parent):
 		ttk.Checkbutton(parent, text="Checkbutton").pack(anchor="w")
+
+	def create_listbox_preview(self, parent):
+		lbox = tk.Listbox(parent, width=20, height=2)
+		lbox.pack(anchor="w")
+		lbox.insert(1, "Listbox")
 		
 	def create_text_preview(self, parent):
 		t = tk.Text(parent, width=20, height=2)

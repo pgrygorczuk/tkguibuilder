@@ -5,6 +5,7 @@ from widgets.ComboboxWidget import ComboboxWidget
 from widgets.ButtonWidget import ButtonWidget
 from widgets.EntryWidget import EntryWidget
 from widgets.LabelWidget import LabelWidget
+from widgets.ListboxWidget import ListboxWidget
 from widgets.TextWidget import TextWidget
 from widgets.Widget import Widget
 
@@ -16,6 +17,7 @@ def create_widget(widget_type:str, props:dict={}) -> Widget:
 		"Combobox"	 : ComboboxWidget,
 		"Entry"		 : EntryWidget,
 		"Label"		 : LabelWidget,
+		"Listbox"	 : ListboxWidget,
 		"Text"		 : TextWidget, }
 	if widget_type in widgets:
 		return widgets[widget_type](props)
