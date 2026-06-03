@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font
+import callbacks
 
 class MainFrame(ttk.Frame):
 
@@ -14,10 +15,20 @@ class MainFrame(ttk.Frame):
 		default_font = tk.font.nametofont("TkDefaultFont")
 		default_font.configure(family="{font_family}", size={font_size})
 		self.__build_ui()
+		self.__bind_events()
 
 	def __build_ui(self):
 		{widgets}
 		self.pack(fill="both", expand=True)
+
+	def __bind_events(self):
+		{bind_events}
+
+	@staticmethod
+	def run(data=None):
+		frame = MainFrame(tk.Tk())
+		frame.parent.mainloop()
+		return frame
 
 
 if __name__ == "__main__":

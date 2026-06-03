@@ -61,6 +61,7 @@ class PropsEditorForm(tk.Tk):
 			self.props[key] = value
 
 		print("Updated dict:", self.props)
+		self.after_idle(self.destroy)
 
 
 # --- usage example ---

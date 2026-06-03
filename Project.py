@@ -50,6 +50,7 @@ class Project:
 	def build(self):
 		"""Generates a source code."""
 		build.build(self, "main.py")
+		build.build_callbacks(self, "callbacks.py")
 
 	def get_settings(self, path:str, default:int|str|None=None):
 		"""Reads a value from settings at a given path. The path should

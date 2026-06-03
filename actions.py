@@ -1,6 +1,7 @@
 """Actions triggered in response to program window events."""
 
 import pygame
+from forms.EventsEditorForm import EventsEditorForm
 from forms.WidgetSelectForm import WidgetSelectForm
 from forms.PropsEditorForm import PropsEditorForm
 from forms.SaveForm import SaveForm
@@ -17,6 +18,10 @@ def on_window_resize(screen: pygame.Surface, project: Project) -> pygame.Surface
 	w, h = max(160, w), max(80, h)
 	project.settings.set_by_path("form.size", [w, h])
 	return pygame.display.set_mode([w, h], pygame.RESIZABLE)
+
+def events_editor(screen: pygame.Surface, project: Project):
+	form = EventsEditorForm.run(project)
+	print("ev")
 
 def save(project: Project):
 	"""Builds and saves a project."""
@@ -37,5 +42,7 @@ def context_menu(coords: tuple[int, int], project: Project):
 	props = { "widget": None, "x": coords[0], "y": coords[1] }
 	WidgetSelectForm("Widget select", props).mainloop()
 	# Add selected widget.
-	project.widgets.append(factory.create_widget(
-		widget_type = props["widget"], props = props))
+	if props["widget"] is not None:
+		project.widgets.append(factory.create_widget(
+			widget_type = props["widget"],
+			props = props))

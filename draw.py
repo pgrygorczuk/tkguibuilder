@@ -4,7 +4,7 @@ import pygame
 
 def show_hint(screen: pygame.Surface, font: pygame.font.Font):
 	"""Show hints at the bottom."""
-	s = f"F1 - help  :  F2 - save  :  F3 - load  :  F4 - settings"
+	s = f"F1 - help  :  F2 - save  :  F3 - load  :  F4 - settings : F5 - run : F6 - events"
 	text = font.render(s, False, [0, 0, 0])
 	screen.blit(text, [5, screen.get_size()[1]-25])
 

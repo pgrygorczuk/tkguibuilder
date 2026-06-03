@@ -53,9 +53,17 @@ while running:
 		# Handle key events.
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_F1:
-				...
+				... # TODO
 			elif event.key == pygame.K_F2:
 				actions.save(project)
+			elif event.key == pygame.K_F3:
+				... # TODO
+			elif event.key == pygame.K_F4:
+				... # TODO
+			elif event.key == pygame.K_F5:
+				... # TODO
+			elif event.key == pygame.K_F6:
+				actions.events_editor(screen, project)
 			elif event.key == pygame.K_DELETE and active_widget:
 				project.remove_widget(active_widget)
 
