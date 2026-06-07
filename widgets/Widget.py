@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 import pygame
 import consts
 
@@ -44,7 +45,7 @@ class Handles:
 		return None
 
 
-class Widget:
+class Widget(ABC):
 	grid_size:int = 0
 
 	def __init__(self, props:dict={}):
@@ -54,6 +55,8 @@ class Widget:
 		default_name += str(id(self))[-4:]
 		self.name = props.get("name", default_name)
 		self.text = props.get("text", self.__class__.__name__)
+		self.expand_x = props.get("expand_x", False)
+		self.expand_y = props.get("expand_y", False)
 		self.offset_x, self.offset_y = 0, 0
 		self.is_enabled = props.get("enabled", True)
 		self.is_active = False
@@ -70,6 +73,7 @@ class Widget:
 			"x": self.rect.x, "y": self.rect.y,
 			"width": self.rect.w, "height": self.rect.h,
 			"text": self.text, "is_enabled": self.is_enabled,
+			"expand_x": self.expand_x, "expand_y": self.expand_y
 		}
 
 	@property
@@ -92,7 +96,8 @@ class Widget:
 			"name": self.name,
 			"x": self.rect.x, "y": self.rect.y,
 			"width": self.rect.w, "height": self.rect.h,
-			"text": self.text, "is_enabled": self.is_enabled, })
+			"text": self.text, "is_enabled": self.is_enabled,
+			"expand_x": self.expand_x, "expand_y": self.expand_y })
 		return self.props
 
 	def set_properties(self, props:dict) -> None:
@@ -103,11 +108,40 @@ class Widget:
 		self.name = self.props["name"]
 		self.text = self.props["text"]
 		self.is_enabled = self.props["is_enabled"]
+		self.expand_x = self.props["expand_x"]
+		self.expand_y = self.props["expand_y"]
 		self.handles = Handles(self.rect)
 
-	def get_code(self, indent:int=0) -> str:
-		return "\t"*indent + f"#{self.name}\n"
-	
+	def get_code(self, settings:dict, indent:int=0) -> str:
+		ind = "\t"*indent
+		return (
+			f'{ind}#{self.name}\n'
+			f'{self.get_code_create(settings, indent)}'
+			f'{self.get_code_place(settings, indent)}' )
+
+	@abstractmethod
+	def get_code_create(self, settings:dict, indent:int=0) -> str:
+		...
+
+	def get_code_place(self, settings:dict, indent:int=0) -> str:
+		ind = "\t"*indent
+		parent_width  = settings["form"]["size"][0]
+		parent_height = settings["form"]["size"][1]
+		width  = self.rect.width
+		height = self.rect.height
+		rel = ""
+		if self.expand_x:
+			margin_right = parent_width - self.rect.x - self.rect.w #(pw - x - w)			
+			width = - self.rect.x - margin_right
+			rel = "relwidth=1.0, "
+		if self.expand_y:
+			margin_bottom = parent_height - self.rect.y - self.rect.h
+			height = - self.rect.y - margin_bottom
+			rel += "relheight=1.0, "
+		return (
+			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, {rel}'
+			f'width={width}, height={height})\n' )
+
 	def get_bind_events(self, indent:int=0) -> str:
 		out, ind = "", "\t"*indent
 		for ev in self.bindings:

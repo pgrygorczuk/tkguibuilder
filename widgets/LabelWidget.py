@@ -13,11 +13,8 @@ class LabelWidget(Widget):
 		rect = text.get_rect(center=(self.rect.centerx, self.rect.centery))
 		screen.blit(text, rect)
 
-	def get_code(self, indent:int=0):
-		code = super().get_code(indent)
+	def get_code_create(self, settings:dict, indent:int=0):
 		ind = "\t"*indent
-		return code + (
+		return (
 			f'{ind}{self.vname} = ttk.Label(self, text="{self.text}")\n'
-			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, '
-			f'width={self.rect.width}, height={self.rect.height})\n'
 		)

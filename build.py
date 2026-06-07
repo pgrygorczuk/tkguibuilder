@@ -34,11 +34,11 @@ def build(project:Project, out:str) -> None:
 	widget:Widget
 	ws = be = ""
 	for widget in project.widgets:
-		ws += widget.get_code(indent = 2)
+		ws += widget.get_code(project.settings, indent=2)
 		be += widget.get_bind_events(indent = 2)
 	if not be:
 		be = "..."
-	# We use a template to generate code.
+	# We use a template to generate the code.
 	code = templ.format(
 		title		= title,
 		size		= size,
@@ -47,5 +47,5 @@ def build(project:Project, out:str) -> None:
 		font_size   = font_size,
 		font_style  = font_style,
 		bind_events = be.strip() )
-	path = project.get_workspace_path(out)
+	path = project.get_workspace_path(out, True)
 	utils.save_text(code, path)

@@ -18,12 +18,9 @@ class TextWidget(Widget):
 		screen.blit(text, [x+2, y])
 		screen.set_clip(old_clip)
 
-	def get_code(self, indent:int=0):
-		code = super().get_code(indent)
+	def get_code_create(self, settings:dict, indent:int=0):
 		ind = "\t"*indent
-		return code + (
+		return (
 			f'{ind}{self.vname} = tk.Text(self, font=self.font, wrap=tk.WORD)\n'
-			f'{ind}{self.vname}.place(x={self.rect.x}, y={self.rect.y}, '
-			f'width={self.rect.width}, height={self.rect.height})\n'
 			f'{ind}{self.vname}.insert(tk.END, "{self.text}")\n'
 		)

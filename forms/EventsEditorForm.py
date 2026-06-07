@@ -42,10 +42,10 @@ class EventsEditorForm(ttk.Frame):
 				self.selected_widget = self.widgets[0]
 		#events_lbox
 		self.events_lbox = tk.Listbox(self, font=self.font, selectmode="single")
-		self.events_lbox.place(x=10, y=50, width=200, height=690)
+		self.events_lbox.place(x=10, y=50, relheight=1.0, width=200, height=-70)
 		#text
 		self.text = tk.Text(self, font=["Consolas", 11], wrap=tk.WORD)
-		self.text.place(x=220, y=80, width=860, height=660)
+		self.text.place(x=220, y=90, relwidth=1.0, relheight=1.0, width=-230, height=-110)
 		self.text.insert(tk.END, consts.DEFAULT_TEXT)
 		#label_1
 		self.label_1 = ttk.Label(self, text="Select a widget:")
@@ -147,5 +147,5 @@ class EventsEditorForm(ttk.Frame):
 
 if __name__ == "__main__":
 	root = tk.Tk()
-	app = EventsEditorForm(root, [])
+	app = EventsEditorForm(root, Project())
 	root.mainloop()
