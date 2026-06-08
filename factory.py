@@ -7,6 +7,7 @@ from widgets.EntryWidget import EntryWidget
 from widgets.LabelWidget import LabelWidget
 from widgets.ListboxWidget import ListboxWidget
 from widgets.TextWidget import TextWidget
+from widgets.Treeview import Treeview
 from widgets.Widget import Widget
 
 def create_widget(widget_type:str, props:dict={}) -> Widget:
@@ -18,7 +19,8 @@ def create_widget(widget_type:str, props:dict={}) -> Widget:
 		"Entry"		 : EntryWidget,
 		"Label"		 : LabelWidget,
 		"Listbox"	 : ListboxWidget,
-		"Text"		 : TextWidget, }
+		"Text"		 : TextWidget,
+		"Treeview"	 : Treeview, }
 	if widget_type in widgets:
 		return widgets[widget_type](props)
 	raise ValueError(f"Unknown widget type: {widget_type}")

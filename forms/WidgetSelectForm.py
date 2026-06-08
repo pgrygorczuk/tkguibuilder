@@ -26,6 +26,7 @@ class WidgetSelectForm(tk.Tk):
 			("Checkbutton", self.create_checkbutton_preview),
 			("Listbox", self.create_listbox_preview),
 			("Text", self.create_text_preview),
+			("Treeview", self.create_text_preview),
 		]
 
 		for row, (name, preview_func) in enumerate(widgets):
