@@ -45,6 +45,6 @@ class SpinboxWidget(Widget):
 	def get_code_create(self, settings:dict, indent:int=0):
 		ind = "\t"*indent
 		return (
-			f'{ind}{self.vname} = tk.Spinbox(self, font=self.font)\n'
+			f'{ind}{self.vname} = ttk.Spinbox(self, font=self.font)\n'
 			f'{ind}{self.vname}.config(state="normal")\n'
 		)
