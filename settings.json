@@ -4,7 +4,8 @@
             300,
             120
         ],
-        "title": "New project"
+        "title": "New project",
+        "class_name": "MainFrame"
     },
     "font": {
         "family": "Segoe UI",

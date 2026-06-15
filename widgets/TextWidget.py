@@ -22,5 +22,5 @@ class TextWidget(Widget):
 		ind = "\t"*indent
 		return (
 			f'{ind}{self.vname} = tk.Text(self, font=self.font, wrap=tk.WORD)\n'
-			f'{ind}{self.vname}.insert(tk.END, "{self.text}")\n'
+			f'{ind}{self.vname}.insert(tk.END, """{self.text}""")\n'
 		)

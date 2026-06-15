@@ -14,8 +14,8 @@ class Project:
 	def __init__(self, name:str="New project"):
 		"""The project consists of menu, settings and widgets.
 		The Workspace is a directory where the project is stored."""
-		self.name = name
-		self.menu:Dict = Dict()
+		self.name:str = name
+		self.menu:dict = {}
 		self.settings:Dict = Dict(Project.settings.copy())
 		self.widgets:list[Widget] = []
 
@@ -32,7 +32,7 @@ class Project:
 		if os.path.exists(workspace + "settings.json"):
 			self.settings = Dict.from_json(workspace + "settings.json")
 		if os.path.exists(workspace + "menu.json"):
-			self.menu	  = Dict.from_json(workspace + "menu.json")
+			self.menu	  = utils.load_json(workspace + "menu.json")
 		if os.path.exists(workspace + "widgets.pic"):
 			self.widgets  = utils.load_pic(workspace + "widgets.pic")
 		Widget.grid_size = int(self.get_settings("grid_size", 0))
