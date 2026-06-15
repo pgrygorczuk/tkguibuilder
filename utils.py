@@ -14,10 +14,14 @@ def save_json(data:dict, path:str) -> None:
 		json.dump(data, f, indent=4)
 
 def load_text(path:str="") -> str:
+	if not os.path.exists(path):
+		return ""
 	with open(path, "r", encoding="utf8") as f:
 		return f.read()
 
-def save_text(text:str, path:str) -> None:
+def save_text(text:str, path:str, overwrite:bool=True) -> None:
+	if not overwrite and os.path.exists(path):
+		return
 	with open(path, "w+", encoding="utf8") as f:
 		f.write(text)
 
@@ -34,4 +38,4 @@ def save_pic(items:list|dict, path:str) -> None:
 
 # Tkinter uses points, pygame uses pixels
 def pt2px(pt:int, dpi:int=96) -> int:
-	return int(pt * dpi / 72)
+	return round(pt * dpi / 72)

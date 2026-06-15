@@ -1,7 +1,7 @@
 from functools import reduce
 from pathlib import Path
+from typing import Any
 from widgets.Widget import Widget
-from Dict import Dict
 import os
 import build, factory, utils
 
@@ -9,14 +9,14 @@ class Project:
 	"""Represents the state of the entire project."""
 
 	# Default (global) settings.
-	settings:Dict = Dict.from_json("settings.json")
+	settings:dict = utils.load_json("settings.json")
 
 	def __init__(self, name:str="New project"):
 		"""The project consists of menu, settings and widgets.
 		The Workspace is a directory where the project is stored."""
-		self.name = name
-		self.menu:Dict = Dict()
-		self.settings:Dict = Dict(Project.settings.copy())
+		self.name:str = name
+		self.menu:dict = {}
+		self.settings:dict = Project.settings.copy()
 		self.widgets:list[Widget] = []
 
 	def save(self):
@@ -30,9 +30,9 @@ class Project:
 		"""Loads project from files."""
 		workspace = Project.get_workspace_path()
 		if os.path.exists(workspace + "settings.json"):
-			self.settings = Dict.from_json(workspace + "settings.json")
+			self.settings = utils.load_json(workspace + "settings.json")
 		if os.path.exists(workspace + "menu.json"):
-			self.menu	  = Dict.from_json(workspace + "menu.json")
+			self.menu	  = utils.load_json(workspace + "menu.json")
 		if os.path.exists(workspace + "widgets.pic"):
 			self.widgets  = utils.load_pic(workspace + "widgets.pic")
 		Widget.grid_size = int(self.get_settings("grid_size", 0))
@@ -49,23 +49,31 @@ class Project:
 
 	def build(self):
 		"""Generates a source code."""
-		build.build(self, "main.py")
-		build.build_callbacks(self, "callbacks.py")
+		class_name = self.get_settings("form.class_name")
+		build.build(self, class_name+".py")
+		build.build_callbacks(self, class_name+"_callbacks.py")
 
-	def get_settings(self, path:str, default:int|str|None=None):
+	def get_settings(self, path:str, default:Any=None) -> Any:
 		"""Reads a value from settings at a given path. The path should
 		be composed of words separated by dots (e.g: key1.key2.key3).
 		If the value is missing, a default value may be returned."""
-		try:
-			return self.settings.get_by_path(path)
-		except KeyError as e:
-			return Project.settings.get_by_path(path, default)
+		keys = path.split(".")
+		def get_val(d, default=None, i=0) -> Any:
+			value = d.get(keys[i], default)
+			if type(value) == dict and len(keys) > i+1:
+				return get_val(value, default, i+1)
+			return value
+		# Try to get local settings.
+		v = get_val(self.settings)
+		if v is None: # Get global settings.
+			return get_val(Project.settings, default)
+		return v
 
 	@staticmethod
 	def get_workspace_path(path:str="", make_dirs:bool=False) -> str:
 		"""Returns a path to the current workspace or to a file
 		inside it."""
-		workspace = Project.settings.get_by_path("workspace")
+		workspace = Project.settings["workspace"]
 		if not path.startswith(workspace):
 			path = workspace + path
 		if make_dirs:
@@ -77,5 +85,5 @@ class Project:
 	def set_workspace(workspace:str) -> None:
 		"""Updates a workspace."""
 		if not workspace.endswith("/"): workspace += "/"
-		Project.settings.set_by_path("workspace", workspace)
+		Project.settings["workspace"] = workspace
 		utils.save_json(Project.settings, "settings.json")

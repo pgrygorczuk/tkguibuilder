@@ -1,8 +1,7 @@
 """A set of constant (read only) values."""
 
 DEFAULT_TEXT = (
-    "widget = event.widget\n"
-	"parent = widget.winfo_parent()\n"
+    "widget, parent = event.widget, event.widget.master\n"
 	"" )
 
 EVENTS = {
