@@ -6,10 +6,11 @@ import {class_name}_callbacks as callbacks
 
 class {class_name}(ttk.Frame):
 
-	def __init__(self, parent:ttk.Frame|tk.Tk):
+	def __init__(self, parent:ttk.Frame|tk.Tk, props:dict={{}}):
 		"""Auto-generated method. Do not modify."""
 		super().__init__(parent)
 		self.parent = parent
+		self.props = props
 		self.style = ttk.Style()
 		self.parent.title("{title}")
 		self.font = ["{font_family}", {font_size}]
@@ -34,11 +35,14 @@ class {class_name}(ttk.Frame):
 		{post_init}
 
 	@staticmethod
-	def run(data=None):
+	def run(props={{}}):
 		"""Auto-generated method. Do not modify."""
-		frame = MainFrame(tk.Tk())
+		frame = MainFrame(tk.Tk(), props)
 		frame.parent.mainloop()
 		return frame
 
 	# Custom methods.
 	{custom_methods}
+
+if __name__ == "__main__":
+	{class_name}.run()

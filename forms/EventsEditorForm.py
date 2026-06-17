@@ -40,6 +40,9 @@ class EventsEditorForm(ttk.Frame):
 			self.widget_cbox.current(0)
 			if self.selected_widget is None:
 				self.selected_widget = self.widgets[0]
+		widget_class_name = "Button"
+		if self.selected_widget:
+			widget_class_name = self.selected_widget.__class__.__name__.replace("Widget", "")
 		#events_lbox
 		self.events_lbox = tk.Listbox(self, font=self.font, selectmode="single")
 		self.events_lbox.place(x=10, y=50, relheight=1.0, width=200, height=-70)
@@ -56,12 +59,13 @@ class EventsEditorForm(ttk.Frame):
 		#info_label
 		self.info_label = ttk.Label(self, text="")
 		self.info_label.place(x=220, y=50, width=860, height=30)
-		self.info_label.config(text=consts.EVENTS[self.selected_ev])
+		self.info_label.config(text=consts.get_event_desc(self.selected_ev) )
 		#event_cbox
 		self.event_cbox_var = tk.StringVar()
 		self.event_cbox = ttk.Combobox(self, font=self.font, textvariable=self.event_cbox_var)
 		self.event_cbox.place(x=770, y=10, width=200, height=30)
-		self.event_cbox["values"] = list(consts.EVENTS.keys())
+		self.event_cbox["values"] = list(
+			consts.get_events(widget_class_name).keys())
 		self.event_cbox.current(0)
 		#close_btn
 		self.close_btn = ttk.Button(self, text="Close")
@@ -82,6 +86,14 @@ class EventsEditorForm(ttk.Frame):
 		form = EventsEditorForm(root, project)
 		root.mainloop()
 		return form
+
+	def __refresh_event_cbox(self):
+		if not self.selected_widget: return
+		widget_class_name = self.selected_widget.__class__.__name__.replace("Widget", "")
+		self.event_cbox["values"] = list(
+			consts.get_events(widget_class_name).keys())
+		self.event_cbox.current(0)
+		self.selected_ev = self.event_cbox_var.get()
 
 	def __refresh_lbox(self):
 		if self.selected_widget is None: return
@@ -122,8 +134,10 @@ class EventsEditorForm(ttk.Frame):
 				del self.selected_widget.bindings[ev]
 
 	def event_cbox__ComboboxSelected(self, event:tk.Event):
+		self.__save_text() # Save the previous text.
 		self.selected_ev = self.event_cbox_var.get()
-		self.info_label.config(text=consts.EVENTS[self.selected_ev])
+		self.info_label.config(text=consts.get_event_desc(self.selected_ev))
+		self.__refresh_lbox()
 
 	def widget_cbox__ComboboxSelected(self, event:tk.Event):
 		widget_name = self.widget_cbox_var.get()
@@ -132,15 +146,17 @@ class EventsEditorForm(ttk.Frame):
 			if widget.name == widget_name:
 				self.selected_widget = widget
 				break
+		self.__refresh_event_cbox()
 		self.__refresh_lbox()
 
 	def events_lbox__ListboxSelect(self, event:tk.Event):
 		selections = self.events_lbox.curselection() # A list of selected indices.
 		if not selections: return
+		self.__save_text() # Save the previous text.
 		# Load a text from the currently selected item.
 		ev = self.selected_ev = self.events_lbox.get(selections[0])
 		self.event_cbox.set(ev)
-		self.info_label.config(text=consts.EVENTS[ev])
+		self.info_label.config(text=consts.get_event_desc(ev))
 		self.text.delete("1.0", tk.END)
 		self.text.insert(tk.END, self.selected_widget.bindings[ev])
 

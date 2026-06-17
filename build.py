@@ -40,11 +40,14 @@ def get_methods(path:str, class_name:str) -> str:
 
 	for line in code.split("\n"):
 		line = line.rstrip()
+		ls = line.lstrip()
 		if "Custom methods" in line:
 			start_reading = True
 			continue
 		if not start_reading:
 			continue
+		if ls.startswith('if __name__ == "__main__":'):
+			break
 		result += line + "\n"
 
 	return result.strip()
@@ -65,7 +68,7 @@ def get_post_init(path:str) -> str:
 			continue
 		if not start_reading:
 			continue
-		if ls.startswith("@") or ls.startswith("def"):
+		if ls.startswith("@"):
 			break
 		result += line + "\n"
 

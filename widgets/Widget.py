@@ -145,7 +145,8 @@ class Widget(ABC):
 	def get_bind_events(self, indent:int=0) -> str:
 		out, ind = "", "\t"*indent
 		for ev in self.bindings:
-			fn_name = self.name + "__" + ev[1:-1].replace("-", "_")
+			fn_name = self.name + "__" + ev.replace("<", ""
+					).replace(">", "").replace("-", "_")
 			out += ind + '{}.bind("{}", callbacks.{})\n'.format(
 				self.vname, ev, fn_name )
 		return out
@@ -154,8 +155,9 @@ class Widget(ABC):
 		out, ind0, ind1 = "", "\t"*indent, "\t"*(indent+1)
 		for ev in self.bindings:
 			text = self.bindings[ev].replace("\n", "\n"+ind1)
-			fn_name = self.name + "__" + ev[1:-1].replace("-", "_")
-			desc = consts.EVENTS[ev]
+			fn_name = self.name + "__" + ev.replace("<", ""
+					).replace(">", "").replace("-", "_")
+			desc = consts.get_event_desc(ev)
 			out += ind0 + f"def {fn_name}(event:tk.Event):\n"
 			out += ind1 + f'"""{desc} on the {self.name} widget."""\n'
 			out += ind1 + text + "\n\n"

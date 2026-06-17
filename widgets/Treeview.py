@@ -19,14 +19,19 @@ class Treeview(Widget):
 		screen.set_clip(old_clip)
 
 	def get_code_create(self, settings:dict, indent:int=0):
-		columns = self.props.get("columns", ["Col_1", "Col_2"])
+		columns = self.props.get("columns", [])
 		data = self.props.get("data", [])
 		ind = "\t"*indent
 		ins = ""
+		
+		create = f'{ind}{self.vname} = ttk.Treeview(self)\n'
+		conf = f'{ind}self.style.configure("Treeview.Heading", font=self.font)\n'
+
 		for row in data:
 			ins += f'{ind}{self.vname}.insert("", "end", values={row})\n'
-		return (
-			f'{ind}{self.vname} = ttk.Treeview(self, columns={columns}, '
-			f'show="headings")\n'
-			f'{ind}self.style.configure("Treeview.Heading", font=self.font)\n'
-		) + ins
+
+		if columns:
+			create = f'{ind}{self.vname} = ttk.Treeview(self, columns={columns}, '
+			create += 'show="headings")\n'
+
+		return	create + conf + ins
